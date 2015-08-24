@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace BluetoothBarcodeReader.Scanner
+﻿namespace BluetoothBarcodeReader.Scanner
 {
-    enum Symbology
+    public enum Symbology
     {
         UPC_E0,
         UPC_E1,
