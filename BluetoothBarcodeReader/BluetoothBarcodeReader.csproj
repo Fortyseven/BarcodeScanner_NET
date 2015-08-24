@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="InvalidSettingsException.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -53,6 +54,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scanner\BarcodeScanner.cs" />
     <Compile Include="Scanner\ConnectionException.cs" />
+    <Compile Include="Scanner\Drivers\KDC200.cs" />
     <Compile Include="Scanner\ScanDatacs.cs" />
     <Compile Include="Scanner\Symbology.cs" />
     <EmbeddedResource Include="MainForm.resx">

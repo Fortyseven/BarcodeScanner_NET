@@ -28,6 +28,7 @@
         private void InitializeComponent()
         {
             this.groupConnection = new System.Windows.Forms.GroupBox();
+            this.btnConnect = new System.Windows.Forms.Button();
             this.cbStopBits = new System.Windows.Forms.ComboBox();
             this.lblStopBits = new System.Windows.Forms.Label();
             this.cbDataBits = new System.Windows.Forms.ComboBox();
@@ -39,7 +40,6 @@
             this.cbPort = new System.Windows.Forms.ComboBox();
             this.lblPort = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.btnConnect = new System.Windows.Forms.Button();
             this.groupConnection.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -63,12 +63,23 @@
             this.groupConnection.TabStop = false;
             this.groupConnection.Text = "Connection";
             // 
+            // btnConnect
+            // 
+            this.btnConnect.Location = new System.Drawing.Point(210, 15);
+            this.btnConnect.Name = "btnConnect";
+            this.btnConnect.Size = new System.Drawing.Size(188, 23);
+            this.btnConnect.TabIndex = 10;
+            this.btnConnect.Text = "Connect";
+            this.btnConnect.UseVisualStyleBackColor = true;
+            this.btnConnect.Click += new System.EventHandler(this.btnConnect_Click);
+            // 
             // cbStopBits
             // 
             this.cbStopBits.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbStopBits.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cbStopBits.FormattingEnabled = true;
             this.cbStopBits.Items.AddRange(new object[] {
+            "None",
             "1",
             "1.5",
             "2"});
@@ -147,11 +158,12 @@
             "2400",
             "4800",
             "9600",
-            "14.4k",
-            "19.2k",
-            "38.4k",
-            "57.6k",
-            "115.2k"});
+            "14400",
+            "19200",
+            "28800",
+            "38400",
+            "57600",
+            "115200"});
             this.cbBaud.Location = new System.Drawing.Point(39, 45);
             this.cbBaud.Name = "cbBaud";
             this.cbBaud.Size = new System.Drawing.Size(63, 21);
@@ -175,6 +187,7 @@
             this.cbPort.Name = "cbPort";
             this.cbPort.Size = new System.Drawing.Size(164, 21);
             this.cbPort.TabIndex = 1;
+            this.cbPort.DropDown += new System.EventHandler(this.cbPort_DropDown);
             // 
             // lblPort
             // 
@@ -189,26 +202,16 @@
             // 
             this.groupBox1.Location = new System.Drawing.Point(12, 95);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(590, 243);
+            this.groupBox1.Size = new System.Drawing.Size(416, 243);
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Scan Data";
-            // 
-            // btnConnect
-            // 
-            this.btnConnect.Location = new System.Drawing.Point(210, 15);
-            this.btnConnect.Name = "btnConnect";
-            this.btnConnect.Size = new System.Drawing.Size(188, 23);
-            this.btnConnect.TabIndex = 10;
-            this.btnConnect.Text = "Connect";
-            this.btnConnect.UseVisualStyleBackColor = true;
-            this.btnConnect.Click += new System.EventHandler(this.btnConnect_Click);
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(616, 350);
+            this.ClientSize = new System.Drawing.Size(439, 350);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.groupConnection);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
@@ -217,7 +220,8 @@
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "KDC200";
-            this.Load += new System.EventHandler(this.Form1_Load);
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainForm_FormClosed);
+            this.Load += new System.EventHandler(this.MainForm_FormLoad);
             this.groupConnection.ResumeLayout(false);
             this.groupConnection.PerformLayout();
             this.ResumeLayout(false);

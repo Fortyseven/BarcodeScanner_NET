@@ -1,59 +1,85 @@
 ﻿using System;
-using System.Windows.Forms;
 using System.IO.Ports;
-using System.Threading;
+using System.Windows.Forms;
+
+/*
+ *  Start - 3 (ETX)
+ *  5 bytes
+ *   [Start of BC ASCII representation]
+ *  0 NUL
+ *  Ends with '@'
+ */
 
 namespace BluetoothBarcodeReader.Scanner
 {
-    class BarcodeScanner
+    public class BarcodeScanner
     {
         public bool IsConnected { get; private set; }
 
+        public string SerialPortName { get; set; }
+        public int SerialBaud { get; set; }
+        public Parity SerialParity { get; set; }
+        public int SerialDataBits { get; set; }
+        public StopBits SerialStopBits { get; set; }
+
         private const string NEWLINE = "\x0d";
-        private SerialPort _port;
+        protected SerialPort _port;
 
-        private bool _continue_monitoring;
+        public delegate void OnScanDataCallback( ScanData scan );
 
-        public virtual void OnScanReceived( ScanData scan_data )
-        {
-        }
+        public OnScanDataCallback OnScanData = null;
 
         public virtual void OnScanError( string message )
         {
             MessageBox.Show( message, "Scan Error" );
         }
 
-        private Thread _scan_thread;
+        //private Thread _scan_thread;
+
+        public BarcodeScanner()
+        {
+            // Some sane defaults
+            SerialBaud = 115200;
+            SerialParity = Parity.None;
+            SerialDataBits = 8;
+            SerialStopBits = StopBits.One;
+        }
 
         public void Connect()
         {
-            try {
-                _port = new SerialPort( "COM6", 115200, Parity.None, 8, StopBits.One ) {
-                    ReadTimeout = 1000,
-                    WriteTimeout = 1000,
-                    NewLine = NEWLINE
-                };
+            if ( SerialPortName.Length == 0 )
+                throw new InvalidSettingsException( "Serial port name is empty" );
 
-                _scan_thread = new Thread( new ThreadStart( ScanThread_Main ) );
-                _scan_thread.Start();
-                while ( !_scan_thread.IsAlive ) { ; }
+            if ( SerialBaud < 300 )
+                throw new InvalidSettingsException( "Serial port baud rate must be >= 300" );
+
+            try {
+                _port = new SerialPort( SerialPortName,
+                                        SerialBaud,
+                                        SerialParity,
+                                        SerialDataBits,
+                                        SerialStopBits ) {
+                                            ReadTimeout = 1000,
+                                            WriteTimeout = 1000,
+                                            NewLine = NEWLINE
+                                        };
+
+                _port.Open();
+                _port.DataReceived += OnDataReceived;
+
+                //_scan_thread = new Thread( new ThreadStart( ScanThread_Main ) );
+                //_scan_thread.Start();
+                //while ( !_scan_thread.IsAlive ) { ; }
 
                 IsConnected = true;
             }
             catch ( Exception e ) {
-                throw new ConnectionException( "Could not connect to device." );
+                throw new ConnectionException( "Could not connect to device: " + e );
             }
-        }
-
-        public void StopMonitoring()
-        {
-            _continue_monitoring = false;
         }
 
         public void Disconnect()
         {
-            StopMonitoring();
-
             try {
                 if ( _port.IsOpen )
                     _port.Close();
@@ -65,16 +91,9 @@ namespace BluetoothBarcodeReader.Scanner
             IsConnected = false;
         }
 
-        private void ScanThread_Main()
+        protected virtual void OnDataReceived( object sender, SerialDataReceivedEventArgs e )
         {
-            Random random = new Random();
-
-            _continue_monitoring = true;
-            while ( _continue_monitoring ) {
-                Console.WriteLine( "Anus! " + random.Next( 0, 1000 ) );
-            }
+            throw new NotImplementedException();
         }
-
-
     }
 }
