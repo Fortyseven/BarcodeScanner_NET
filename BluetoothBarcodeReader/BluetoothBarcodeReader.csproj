@@ -55,8 +55,9 @@
     <Compile Include="Scanner\BarcodeScanner.cs" />
     <Compile Include="Scanner\ConnectionException.cs" />
     <Compile Include="Scanner\Drivers\KDC200.cs" />
-    <Compile Include="Scanner\ScanDatacs.cs" />
+    <Compile Include="Scanner\ScanData.cs" />
     <Compile Include="Scanner\Symbology.cs" />
+    <Compile Include="ThreadExtensions.cs" />
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>

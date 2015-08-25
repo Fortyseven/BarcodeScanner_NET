@@ -24,6 +24,8 @@ namespace BluetoothBarcodeReader
             cbParity.SelectedIndex = 0;
 
             PopulatePorts();
+            dataGridView1.Columns.Add( "Code", "Code" );
+            dataGridView1.Columns.Add( "Symb", "Symbology" );
         }
 
         private void MainForm_FormClosed( object sender, FormClosedEventArgs e )
@@ -68,7 +70,10 @@ namespace BluetoothBarcodeReader
 
         private void OnScanDataCallback( ScanData scan )
         {
-            Console.WriteLine( "> " + scan.code + " [" + scan.symb.ToString() + "]\n" );
+            //Console.WriteLine( "> " + scan.code + " [" + scan.symb.ToString() + "]\n" );
+            dataGridView1.SynchronizedInvoke( () => {
+                dataGridView1.Rows.Add( scan.code, scan.symb.ToString() );
+            } );
         }
 
 
